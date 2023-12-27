@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(cuid())
+  username String
+  email    String    @unique
+  picture  String
+  plan     Plan?     @default(BASIC)
+  kounter  Kounter[]
+}
+
+model Kounter {
+  id         String      @id @unique @default(cuid())
+  kounter    User        @relation(fields: [kounterId], references: [id])
+  kounterId  String
+  title      String
+  apikey     String?
+  category   Category?   @default(WEBSITE)
+  visibility Visibility? @default(PUBLIC)
+  status     Status?     @default(ONLINE)
+  count      String?     @default("0")
+  click      String?     @default("0")
+  createdAt  String?
+}
+
+enum Plan {
+  BASIC
+  PREMIUM
+}
+
+enum Category {
+  WEBSITE
+  WORK
+  ORGANIZATION
+  COUNT
+  ADDITIONAL
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum Status {
+  ONLINE
+  OFFLINE
+}

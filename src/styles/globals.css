@@ -2,26 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+* {
+  @apply selection:text-[#F5A524] selection:bg-[#F5A524]/10 text-black hide-scroll;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply font-['Rethink_Sans'] bg-primary-400/20;
+}
+
+/* .bg-primary {
+  @apply bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-purple-800 via-violet-900 to-purple-800;
+} */
+
+.hide-scroll::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  /* background-color: #F5F5F5; */
+}
+
+.hide-scroll::-webkit-scrollbar-thumb {
+  border-radius: 0px !important;
+  /* background-color: rgb(16 185 129); */
+}
+
+.click {
+  @apply active:scale-[.98] sm:cursor-pointer;
+}
+
+.click-none {
+  @apply active:!scale-100;
+}
+
+.link {
+  @apply md:cursor-pointer hover:underline underline-offset-8 decoration-2 decoration-dotted;
+}
+
+.button {
+  @apply font-[mulish] tracking-wide font-semibold bg-amber-500/30 py-3 px-5 hover:-translate-y-[2px] active:scale-[.97] duration-100 select-none hover:shadow-amber-500/25 md:cursor-pointer shadow-lg shadow-amber-500/20 rounded-3xl border border-amber-600 w-fit;
+}
+
+.button-sky {
+  @apply font-[mulish] tracking-wide font-semibold bg-sky-500/30 py-3 px-5 hover:-translate-y-[2px] active:scale-[.97] duration-100 select-none hover:shadow-sky-500/25 md:cursor-pointer shadow-lg shadow-sky-500/20 rounded-3xl border border-sky-600 w-fit;
+}
+
+.default-input {
+  @apply w-full text-white outline-none py-1.5 px-2 placeholder:text-slate-200/50 border-b border-amber-500 bg-transparent;
+}
+
+.default-options {
+  @apply w-full text-white outline-none py-1.5 px-1 placeholder:text-slate-200/50 border-b border-amber-500 bg-transparent;
+}
+
+.default-options * {
+  @apply text-black rounded-3xl m-3 border border-amber-500;
+}
+
+.text-glow {
+  text-shadow: rgba(139, 139, 139, 0.9) 0px 0px 39px;
+}
+
+.text-glow-thin {
+  text-shadow: rgba(139, 139, 139, 0.9) 0px 0px 9px;
+}
+
+.text-glow-amber {
+  text-shadow: rgba(245, 158, 11, 0.9) 0px 0px 39px;
+}
+
+.text-glow-amber-thin {
+  text-shadow: rgba(245, 158, 11, 0.9) 0px 0px 9px;
+}
+
+.text-glow-sky {
+  text-shadow: rgba(14, 165, 233, 0.9) 0px 0px 39px;
+}
+
+.text-glow-sky-thin {
+  text-shadow: rgba(14, 165, 233, 0.9) 0px 0px 9px;
+}
+
+.text-glow-red {
+  text-shadow: rgba(14, 165, 233, 0.9) 0px 0px 39px;
+}
+
+.text-glow-red-thin {
+  text-shadow: rgba(239, 68, 68, 0.9) 0px 0px 9px;
+}
+
+img, image {
+  @apply select-none;
 }

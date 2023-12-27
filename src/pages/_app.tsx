@@ -1,6 +1,32 @@
-import '~/styles/globals.css'
-import type { AppProps } from 'next/app'
+import { NextUIProvider } from "@nextui-org/react";
+import splitbee from "@splitbee/web";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
+import { AnimatePresence } from 'framer-motion';
+import { SessionProvider } from 'next-auth/react';
+import type { AppProps } from 'next/app';
+import Headers from '~/components/Headers';
+import Scroll from "~/components/Scroll";
+import '~/styles/globals.css';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+splitbee.init()
+const queryClient = new QueryClient()
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  return (
+    <>
+      <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
+          <Scroll>
+            <NextUIProvider>
+              <AnimatePresence mode="wait" initial={false}>
+                <Headers />
+                <Component {...pageProps} />
+                <Analytics />
+              </AnimatePresence>
+            </NextUIProvider >
+          </Scroll >
+        </QueryClientProvider>
+      </SessionProvider>
+    </>
+  )
 }
