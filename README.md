@@ -1,6 +1,6 @@
 # Kounter APi | Free Counter Web APi | CouterAPi Alternative
 
-**Kounter APi is a free API counter with more advanced features, simple and very efficient to use. Continue to support Kounter so that this platform remains active.**
+## **Kounter APi is a free API counter with more advanced features, simple and very efficient to use. Continue to support Kounter so that this platform remains active.**
 
 Biasanya di pergunakan untuk mencatat data visitor, dan apapun yang berkaitan dengan **counter**
 
