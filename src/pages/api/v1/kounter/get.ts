@@ -11,6 +11,8 @@ export default async function handler(
             where: { id }
         })
         if (find?.visibility == 'PRIVATE' && apikey?.[0] !== find?.apikey) return res.status(401).send('UNAUTHORIZED')
+        if (find?.status == 'OFFLINE') return res.status(403).send({ status: 'disabled', off: true });
+
         if (find) return res.status(200).send({
             count: Number(find.count),
             click: Number(find.click),

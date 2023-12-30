@@ -2,7 +2,9 @@ import { DOMAttributes } from '@nextui-org/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { generateUsername } from 'unique-username-generator';
 import Container from '~/components/Container';
 import Contents from '~/components/Contents';
@@ -10,23 +12,37 @@ import Navbar from '~/components/Navbar';
 import BuatKounter from '~/components/cards/BuatKounter';
 import DetailKounter from '~/components/cards/DetailKounter';
 import Profile from '~/components/cards/Profile';
-import { CRUD } from '~/hooks/api';
+import { CRUD, dellll, putttt } from '~/hooks/api';
 
 let categoryList = ['WEBSITE', 'WORK', 'ORGANIZATION', 'COUNT', 'ADDITIONAL'] as const
 let delText = ['Yakin', 'Ya, sangat yakin', 'Begitu yakin', 'Mungkin saja, Yakin', 'Oke sangat yakin', 'Yakin sekali!']
 
+let tabList = [
+  { path: 'default', title: 'Dashboard' },
+  { path: 'add', title: 'Buat Kounter' },
+  { path: 'detail', title: 'Detail Kounter' },
+  { path: 'scew9e8n', title: 'Upgrade' },
+]
+
+const ToastSuccess = (text: string) => toast.success(text, {
+  style: { border: '1px solid #2563eb', color: '#2563eb', borderRadius: '20px', boxShadow: '0 20px 20px rgb(0 0 0 / 0.3)' },
+  iconTheme: { primary: '#2563eb', secondary: '#d6e8fd', },
+});
+
+const ToastError = (text: string) => toast.error(text, {
+  style: { border: '1px solid #dc2626', color: '#dc2626', borderRadius: '20px' },
+  iconTheme: { primary: '#dc2626', secondary: '#d6e8fd', },
+});
+
+let isKounterMaks = 30;
+
 export default function Home() {
   const [isKounter, setKounter] = useState<any>(null)
+
   const { data: session, status }: any = useSession()
   const tab: any = useSearchParams().get('tab')
   const id: any = useSearchParams().get('id')
-
-  const addKounterMutate = useMutation({
-    mutationFn: CRUD,
-    onSuccess: () => {
-      getKounterMutate.refetch()
-    }
-  })
+  const router = useRouter()
 
   const getKounterMutate: any = useQuery({
     queryKey: ['getKounter', 'GET', session?.token?.email],
@@ -34,9 +50,36 @@ export default function Home() {
     refetchOnReconnect: true
   })
 
+  const delKounterMutate = useMutation({
+    mutationFn: dellll,
+    onSettled: (status, err, prev: any) => {
+      getKounterMutate.refetch();
+    },
+  })
+
+  const addKounterMutate = useMutation({
+    mutationFn: CRUD,
+    onSettled: async (data, err, prev: any) => {
+      await getKounterMutate.refetch();
+      await router.push(`/dash?tab=detail&id=${prev?.id}`)
+    },
+  })
+
+  const putKounterMutate = useMutation({
+    mutationFn: putttt,
+    onSettled: (data, err, prev: any) => {
+      getKounterMutate.refetch();
+    },
+  })
+
+  const delSubmit = (id: any) => delKounterMutate.mutateAsync(id)
+  const putKounter = (config: any) => putKounterMutate.mutateAsync(config)
+
   const addKounterSubmit = (e: DOMAttributes<HTMLFormElement>) => {
     addKounterMutate.mutateAsync({
       type: 'ADD',
+      currentLength: Number(getKounterMutate.data?.list['ALL CONTENTS'].length),
+      id: `${Math.random().toString(36).substring(2, 30)}`,
       title: e.target[0].value || generateUsername(' '),
       category: (e.target[1].value).toUpperCase() || 'WEBSITE',
       apikey: e.target[5].value == 'PRIVATE' ? (e.target[4].value || `${Math.random().toString(36).substring(2, 35)}`) : undefined,
@@ -47,79 +90,87 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    let data = getKounterMutate.data?.list['ALL CONTENTS'];
-    let find = data?.find((x: any) => x.id == id)
-    if (!find) return;
-    setKounter(find)
-  }, [getKounterMutate.data])
+  let getTab = () => {
+    let find = tabList.find(x => x.path == tab)
+    if (!find) return 'default'
+    return tab;
+  }
 
   useEffect(() => {
-    switch (tab) {
+    let t = getTab()
+    switch (t) {
       case 'detail':
-        if (id.length == 0) return;
-        let data = getKounterMutate.data?.list['ALL CONTENTS'];
-        let find = data?.find((x: any) => x.id == id)
-        if (!find) return;
-        setKounter(find)
+        if (!id) router.push(`/dash`);
+        if (id && getKounterMutate.data) {
+          let data = getKounterMutate.data?.list['ALL CONTENTS'];
+          let find = data?.find((x: any) => x.id == id)
+          if (!find && data.length != 0) router.push(`/dash?tab=detail&id=${data[0]?.id}`);
+          if (!find && data.length == 0) router.push(`/dash`);
+          if (find) setKounter(find);
+        }
         break;
     }
-  }, [tab, id])
+
+  }, [tab, id, getKounterMutate.data])
 
   return (
     <>
-      <Container className='flex-col min-h-screen'>
-        <div className='fixed top-0 w-full mx-auto flex h-64 bg-[#D6E8FD] z-10'></div>
-        <section className='flex flex-row justify-between'>
-          <section className='flex flex-col w-full px-4 pr-10'>
-            <Navbar />
-            <Contents listKounter={getKounterMutate} categoryList={categoryList} />
+      <div>
+        <span className='max-sm:block sm:text-2xl fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>xs</span>
+        <span className='sm:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>sm</span>
+        <span className='md:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>md</span>
+        <span className='lg:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>lg</span>
+        <span className='xl:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>xl</span>
+        <span className='2xl:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>2xl</span>
+      </div>
+      <Toaster reverseOrder={false} />
+      <Container className='flex-col min-h-screen w-full'>
+        <div className='md:fixed top-0 w-full mx-auto flex md:h-64 bg-[#D6E8FD] z-10'></div>
+        <section className='flex flex-col md:flex-row justify-between w-full'>
+          <section className='flex flex-col w-full px-4'>
+            <Navbar tab={getTab()} tabList={tabList} />
+            <Contents
+              listKounter={getKounterMutate}
+              categoryList={categoryList}
+              isLoading={getKounterMutate.isPending}
+            />
           </section>
-          <Profile tab={tab || 'default'} />
-          <BuatKounter tab={tab || 'default'} isSuccess={addKounterMutate.isSuccess} categoryList={categoryList} onSubmit={addKounterSubmit} isLoading={addKounterMutate.isPending} />
-          <DetailKounter tab={tab || 'default'} isKounter={isKounter} />
+          <Profile
+            className="max-[1010px]:hidden"
+            delText={delText}
+            tab={getTab()}
+            isKounterMaks={isKounterMaks}
+            allKounter={getKounterMutate.data?.list?.['ALL CONTENTS']}
+          />
+          <BuatKounter
+            className="max-[1010px]:hidden"
+            tab={getTab()}
+            allKounter={getKounterMutate.data?.list?.['ALL CONTENTS']}
+            isKounterMaks={isKounterMaks}
+            ToastError={ToastError}
+            ToastSuccess={ToastSuccess}
+            categoryList={categoryList}
+            onSubmit={addKounterSubmit}
+            isLoading={addKounterMutate.isPending}
+            isSuccess={addKounterMutate.isSuccess}
+            isError={addKounterMutate.isError}
+          />
+          <DetailKounter
+            className="max-[1010px]:hidden"
+            tab={getTab()}
+            ToastError={ToastError}
+            ToastSuccess={ToastSuccess}
+            allKounter={getKounterMutate.data?.list['ALL CONTENTS']}
+            putKounter={putKounter}
+            delKounter={delSubmit}
+            isKounter={isKounter}
+            isDelError={delKounterMutate.isError}
+            isDelSuccess={delKounterMutate.isSuccess}
+            isPutError={putKounterMutate.isError}
+            isPutSuccess={putKounterMutate.isSuccess}
+            isPutLoading={putKounterMutate.isPending} />
         </section>
       </Container>
-
-      {/* <Modal
-        backdrop="blur"
-        isOpen={isMDelOpen}
-        onOpenChange={onMDelOpenChange}
-        classNames={{ backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20" }}
-        className='border border-red-500 bg-rose-100'
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Yakin ingin menghapus Kounter ini?</ModalHeader>
-              <ModalBody>
-                <h1>
-                  Tindakan ini dapat menghapus seluruh data pada Kounter secara
-                  <span className='font-bold'> Permanen</span> dan data tidak dapat
-                  dikembalikan lagi?
-                </h1>
-                <Slider
-                  size="md"
-                  step={1}
-                  color="danger"
-                  label="Geser >"
-                  showSteps={true}
-                  maxValue={5}
-                  minValue={0}
-                  getValue={(val) => `${delText[val as number]}`}
-                  defaultValue={0}
-                  className="max-w-md mt-5"
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button startContent={<LuTrash2 className='stroke-white' />} className='mt-3' color="danger">
-                  Hapus
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal> */}
     </>
   )
 }

@@ -39,9 +39,30 @@ export const fetchAPi = async (url: string, type: 'text' | 'json') => {
     return await api.text()
 }
 
-export const SITE_TITLE = 'Kounter | Free Counter Web APi | CouterAPi Alternative';
-export const SITE_DESCRIPTION = 'Kounter | Free Counter Web APi | CouterAPi Alternative';
-export const SITE_IMAGE = url('/nulisan.png').href;
+export const getValueByKey = (obj: any, key: any): any[] | null | any => {
+    const values: any = [];
+    const find = (obj: any, key: string) => {
+        try {
+            if (!obj) return;
+            if (obj[key]) {
+                values.push({ [key]: obj[key] });
+            }
+            Object.values(obj).forEach(val => {
+                if (typeof val === 'object') {
+                    find(val, key);
+                }
+            });
+        } catch (e) {
+            return null;
+        }
+    }
+    find(obj, key);
+    return values;
+}
+
+export const SITE_TITLE = 'Kounter APi | Free Counter Web APi | CouterAPi Alternative';
+export const SITE_DESCRIPTION = 'Kounter APi is a free API counter with more advanced features, simple and very efficient to use. Continue to support Kounter so that this platform remains active.';
+export const SITE_IMAGE = url('/logo.png').href;
 
 export const SITE_DOMAIN = 'kounter.vercel.app';
 export const SITE_URL = url().href;

@@ -13,9 +13,10 @@ export default async function handler(
 
         if (!find) return res.status(404).send('NOT FOUND');
         if (find?.visibility == 'PRIVATE' && apikey?.[0] !== find?.apikey) return res.status(401).send('UNAUTHORIZED')
+        if (find?.status == 'OFFLINE') return res.status(403).send({ status: 'disabled', off: true });
 
         let hit = await prisma.$queryRaw`
-            UPDATE Kounter
+            UPDATE "Kounter"
             SET count = ${Number(find.count) + 1}, click = ${Number(find.click) + 1}
             WHERE id = ${id}
         `

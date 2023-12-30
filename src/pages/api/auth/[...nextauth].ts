@@ -20,7 +20,7 @@ export const auth: AuthOptions = {
         }),
     ],
     pages: {
-        signIn: '/auth/login',
+        signIn: '/',
         signOut: '/',
     },
     session: {
@@ -51,7 +51,7 @@ export const auth: AuthOptions = {
             return session
         },
         redirect(url: any) {
-            return url.baseUrl;
+            return url.baseUrl + '/dash';
         }
     },
     secret: process.env.NEXTAUTH_SECRET

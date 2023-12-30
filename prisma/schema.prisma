@@ -12,6 +12,8 @@ model User {
   username String
   email    String    @unique
   picture  String
+  lang     String?   @default("ID")
+  limit    Int?      @default(30)
   plan     Plan?     @default(BASIC)
   kounter  Kounter[]
 }
