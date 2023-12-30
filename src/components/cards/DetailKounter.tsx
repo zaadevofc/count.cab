@@ -62,10 +62,10 @@ const DetailKounter = ({ className, tab, isKounter, delKounter, putKounter, isPu
 
   return (
     <>
-      <section className={`${className} ${tab == 'detail' ? 'opacity-100' : 'opacity-0 hidden'} duration-1000 flex flex-col gap-5 h-fit md:sticky top-6 z-10 max-w-xs w-full`}>
+      <section className={`${className} ${tab == 'detail' ? 'opacity-100' : 'opacity-0 hidden'} duration-1000 shadow-md shadow-primary-500/20 rounded-2xl flex flex-col gap-5 h-fit md:sticky top-6 z-10 max-w-xs w-full`}>
         <Skeleton isLoaded={status != 'loading' && isKounter} className='rounded-2xl border border-gray-300'>
           <div className='flex flex-col'>
-            <div className={`flex flex-col bg-white rounded-2xl shadow-sm border border-primary-200/80`}>
+            <div className={`flex flex-col bg-white rounded-2xl border border-black`}>
               <div className='flex flex-row p-5 items-center justify-between rounded-t-2xl bg-primary-500'>
                 <div className='flex flex-row gap-2'>
                   <div className='flex flex-row items-center gap-x-3'>

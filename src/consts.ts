@@ -62,7 +62,7 @@ export const getValueByKey = (obj: any, key: any): any[] | null | any => {
 
 export const SITE_TITLE = 'Kounter APi | Free Counter Web APi | CouterAPi Alternative';
 export const SITE_DESCRIPTION = 'Kounter APi is a free API counter with more advanced features, simple and very efficient to use. Continue to support Kounter so that this platform remains active.';
-export const SITE_IMAGE = url('/logo.png').href;
+export const SITE_IMAGE = url('/kounter-api-banner.jpeg').href;
 
 export const SITE_DOMAIN = 'kounter.vercel.app';
 export const SITE_URL = url().href;

@@ -7,7 +7,7 @@
 }
 
 body {
-  @apply font-['Rethink_Sans'] bg-primary-400/20;
+  @apply font-['Rethink_Sans'] bg-white/50 bg-[url("/svg/ss.svg")] bg-center;
 }
 
 /* .bg-primary {

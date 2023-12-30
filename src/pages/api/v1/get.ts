@@ -26,9 +26,9 @@ export default async function handler(
         })
 
         let data = {
-            category: ['ALL CONTENTS', ...Object.keys(groupBy(find?.kounter as any, 'category'))],
+            category: ['ALL KOUNTER', ...Object.keys(groupBy(find?.kounter as any, 'category'))],
             list: {
-                'ALL CONTENTS': find?.kounter,
+                'ALL KOUNTER': find?.kounter,
                 ...groupBy(find?.kounter as any, 'category')
             }
         }

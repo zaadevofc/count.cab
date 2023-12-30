@@ -78,7 +78,7 @@ export default function Home() {
   const addKounterSubmit = (e: DOMAttributes<HTMLFormElement>) => {
     addKounterMutate.mutateAsync({
       type: 'ADD',
-      currentLength: Number(getKounterMutate.data?.list['ALL CONTENTS'].length),
+      currentLength: Number(getKounterMutate.data?.list['ALL KOUNTER'].length),
       id: `${Math.random().toString(36).substring(2, 30)}`,
       title: e.target[0].value || generateUsername(' '),
       category: (e.target[1].value).toUpperCase() || 'WEBSITE',
@@ -97,12 +97,17 @@ export default function Home() {
   }
 
   useEffect(() => {
+    if (tab == 'add' || tab == 'detail')
+    document.addEventListener('keyup', (e) => e.key == 'Escape' && router.push('/dash'));
+  }, [tab]);
+
+  useEffect(() => {
     let t = getTab()
     switch (t) {
       case 'detail':
         if (!id) router.push(`/dash`);
         if (id && getKounterMutate.data) {
-          let data = getKounterMutate.data?.list['ALL CONTENTS'];
+          let data = getKounterMutate.data?.list['ALL KOUNTER'];
           let find = data?.find((x: any) => x.id == id)
           if (!find && data.length != 0) router.push(`/dash?tab=detail&id=${data[0]?.id}`);
           if (!find && data.length == 0) router.push(`/dash`);
@@ -115,17 +120,9 @@ export default function Home() {
 
   return (
     <>
-      <div>
-        <span className='max-sm:block sm:text-2xl fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>xs</span>
-        <span className='sm:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>sm</span>
-        <span className='md:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>md</span>
-        <span className='lg:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>lg</span>
-        <span className='xl:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>xl</span>
-        <span className='2xl:block fixed hidden top-0 left-0 bg-red-500 text-white px-1 pb-1 rounded-br-lg'>2xl</span>
-      </div>
       <Toaster reverseOrder={false} />
       <Container className='flex-col min-h-screen w-full'>
-        <div className='md:fixed top-0 w-full mx-auto flex md:h-64 bg-[#D6E8FD] z-10'></div>
+        <div className='md:fixed top-0 w-full mx-auto flex md:h-64 bg-gray-200/10 z-10'></div>
         <section className='flex flex-col md:flex-row justify-between w-full'>
           <section className='flex flex-col w-full px-4'>
             <Navbar tab={getTab()} tabList={tabList} />
@@ -140,12 +137,12 @@ export default function Home() {
             delText={delText}
             tab={getTab()}
             isKounterMaks={isKounterMaks}
-            allKounter={getKounterMutate.data?.list?.['ALL CONTENTS']}
+            allKounter={getKounterMutate.data?.list?.['ALL KOUNTER']}
           />
           <BuatKounter
             className="max-[1010px]:hidden"
             tab={getTab()}
-            allKounter={getKounterMutate.data?.list?.['ALL CONTENTS']}
+            allKounter={getKounterMutate.data?.list?.['ALL KOUNTER']}
             isKounterMaks={isKounterMaks}
             ToastError={ToastError}
             ToastSuccess={ToastSuccess}
@@ -160,7 +157,7 @@ export default function Home() {
             tab={getTab()}
             ToastError={ToastError}
             ToastSuccess={ToastSuccess}
-            allKounter={getKounterMutate.data?.list['ALL CONTENTS']}
+            allKounter={getKounterMutate.data?.list['ALL KOUNTER']}
             putKounter={putKounter}
             delKounter={delSubmit}
             isKounter={isKounter}

@@ -1,7 +1,7 @@
 {
-    "name": "Kounter App",
-    "short_name": "Kounter App",
-    "description": "Kounter | Free Counter Web APi | CouterAPi Alternative",
+    "name": "Kounter APi",
+    "short_name": "Kounter APi",
+    "description": "Kounter APi is a free API counter with more advanced features, simple and very efficient to use. Continue to support Kounter so that this platform remains active.",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

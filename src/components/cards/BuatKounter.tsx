@@ -44,7 +44,7 @@ const BuatKounter = ({ className, tab, onSubmit, isLoading, isSuccess, isError, 
       <ReactInterval timeout={1000} enabled={isStartInt} callback={() => setCanMake(x => x - 1)} />
       <section className={`${className} ${tab == 'add' ? 'opacity-100' : 'opacity-0 hidden'} duration-1000 flex flex-col gap-5 h-fit md:sticky top-6 z-10 max-w-xs w-full`}>
         <div className='flex flex-col'>
-          <div className={`flex flex-col bg-white rounded-2xl shadow-sm border border-primary-200/80`}>
+          <div className={`flex flex-col bg-white rounded-2xl shadow-sm border border-black`}>
             <div className='flex flex-row p-5 items-center justify-between rounded-t-2xl bg-primary-500'>
               <div className='flex flex-row gap-2'>
                 <div className='flex flex-row items-center gap-x-3'>
