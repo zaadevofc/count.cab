@@ -50,3 +50,8 @@ export const putttt = async (config: any) => {
     let res = await fetchAPi(`/api/v1/kounter/put?token=${token}`, 'text')
     return res == 'OK';
 }
+
+export const visit = async (uri: string) => {
+    let res = await fetchAPi(uri, 'text')
+    return !!res;
+}

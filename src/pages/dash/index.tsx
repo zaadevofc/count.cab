@@ -12,7 +12,8 @@ import Navbar from '~/components/Navbar';
 import BuatKounter from '~/components/cards/BuatKounter';
 import DetailKounter from '~/components/cards/DetailKounter';
 import Profile from '~/components/cards/Profile';
-import { CRUD, dellll, putttt } from '~/hooks/api';
+import { VISIT_DASHBOARD_API } from '~/consts';
+import { CRUD, dellll, putttt, visit } from '~/hooks/api';
 
 let categoryList = ['WEBSITE', 'WORK', 'ORGANIZATION', 'COUNT', 'ADDITIONAL'] as const
 let delText = ['Yakin', 'Ya, sangat yakin', 'Begitu yakin', 'Mungkin saja, Yakin', 'Oke sangat yakin', 'Yakin sekali!']
@@ -49,6 +50,15 @@ export default function Home() {
     queryFn: CRUD as any,
     refetchOnReconnect: true
   })
+
+  const visitMutate = useMutation({
+    mutationFn: visit
+  })
+
+  useEffect(() => {
+    let hit = () => visitMutate.mutateAsync(VISIT_DASHBOARD_API)
+    hit()
+  }, [])
 
   const delKounterMutate = useMutation({
     mutationFn: dellll,
@@ -98,7 +108,7 @@ export default function Home() {
 
   useEffect(() => {
     if (tab == 'add' || tab == 'detail')
-    document.addEventListener('keyup', (e) => e.key == 'Escape' && router.push('/dash'));
+      document.addEventListener('keyup', (e) => e.key == 'Escape' && router.push('/dash'));
   }, [tab]);
 
   useEffect(() => {

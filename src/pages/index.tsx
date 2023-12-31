@@ -1,15 +1,27 @@
 import { Button } from "@nextui-org/react";
+import { useMutation } from "@tanstack/react-query";
 import { BuiltInProviderType } from "next-auth/providers/index";
 import { LiteralUnion, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "~/components/Container";
+import { VISIT_MAIN_API } from "~/consts";
+import { visit } from "~/hooks/api";
 
 const Index = () => {
   const [isLog, setLog] = useState<any>([])
 
   const router = useRouter()
   const { status } = useSession()
+
+  const visitMutate = useMutation({
+    mutationFn: visit
+  })
+
+  useEffect(() => {
+    let hit = () => visitMutate.mutateAsync(VISIT_MAIN_API)
+    hit()
+  }, [])
 
   const LogIn = (prov: LiteralUnion<BuiltInProviderType>) => {
     let set = isLog.length == 0;

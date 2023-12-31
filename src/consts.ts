@@ -35,6 +35,7 @@ export const groupBy = (obj: any[], key: string) => obj.reduce((rv, x) => (rv[x[
 
 export const fetchAPi = async (url: string, type: 'text' | 'json') => {
     let api = await fetch(url)
+    if (api.status !== 200) return false
     if (type == 'json') return await api.json()
     return await api.text()
 }
@@ -70,3 +71,6 @@ export const SITE_URL = url().href;
 export const SET_HEADERS = {
     'Cache-Control': 'max-age=604800'
 }
+
+export const VISIT_MAIN_API = process.env.NEXT_PUBLIC_VISIT_MAIN_API as string
+export const VISIT_DASHBOARD_API = process.env.NEXT_PUBLIC_VISIT_DASHBOARD_API as string
