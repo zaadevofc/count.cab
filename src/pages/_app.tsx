@@ -5,8 +5,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { AnimatePresence } from 'framer-motion';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
+import { Toaster } from "react-hot-toast";
 import Headers from '~/components/Headers';
-import Scroll from "~/components/Scroll";
 import '~/styles/globals.css';
 
 splitbee.init()
@@ -16,15 +16,14 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     <>
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
-          <Scroll>
-            <NextUIProvider>
-              <AnimatePresence mode="wait" initial={false}>
-                <Headers />
-                <Component {...pageProps} />
-                <Analytics />
-              </AnimatePresence>
-            </NextUIProvider >
-          </Scroll >
+          <NextUIProvider>
+            <AnimatePresence mode="wait" initial={false}>
+              <Headers />
+              <Toaster reverseOrder={false} />
+              <Component {...pageProps} />
+              <Analytics />
+            </AnimatePresence>
+          </NextUIProvider >
         </QueryClientProvider>
       </SessionProvider>
     </>

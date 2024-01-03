@@ -3,11 +3,15 @@
 @tailwind utilities;
 
 * {
-  @apply selection:text-[#F5A524] selection:bg-[#F5A524]/10 text-black hide-scroll;
+  @apply selection:text-white selection:bg-black/80 text-black hide-scroll;
 }
 
 body {
-  @apply font-['Rethink_Sans'] bg-white/50 bg-[url("/svg/ss.svg")] bg-center;
+  @apply font-['Quicksand'] bg-white;
+}
+
+h1 {
+  @apply text-[15px]
 }
 
 /* .bg-primary {
