@@ -20,7 +20,7 @@ const Dashboard = () => {
   return (
     <>
       <Layout>
-        <div className='grid grid-cols-4 w-full justify-between gap-5'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-full justify-between gap-3 md:gap-5'>
           {!data && tempArray(4).map(x => (
             <Skeleton className='rounded-lg'>
               <div className='w-full h-20'></div>
@@ -45,7 +45,7 @@ const Dashboard = () => {
           <div className='flex flex-col w-full'>
             <h1 className='text-xl font-bold'>Top Kounter</h1>
             <Skeleton isLoaded={data} className='mt-5 rounded-lg'>
-              <Table radius='sm' className='border border-black rounded-lg' aria-label="Controlled table example with dynamic content">
+              <Table radius='sm' className='border border-black rounded-lg' aria-label="Top Kounter Data | Kounter APi">
                 <TableHeader>
                   {topKounterHead.map(x => <TableColumn className={`bg-black text-white ${x == 'Rank' && 'text-center'}`} key={x}>{x}</TableColumn>)}
                 </TableHeader>

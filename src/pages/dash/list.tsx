@@ -127,7 +127,7 @@ const List = () => {
     <>
       <Layout title={`Kounter List ${data ? `(${data?.all?.length}/30)` : ''}`}>
         <div className="flex flex-col mb-4 w-full sticky top-0 py-3 bg-white z-50">
-          <div className="flex gap-3">
+          <div className="flex max-[715px]:flex-wrap justify-between gap-3">
             <div className="flex items-center gap-2 w-full border border-black px-2 py-0.5 md:cursor-pointer rounded-lg">
               <LuSearch className='text-lg opacity-70' />
               <input disabled={!data} onChange={(e: any) => setSearch(e.target.value.trim() || ' ')} defaultValue={isSearch} type="text" placeholder="Cari kounter..." className={`w-full outline-none font-medium`} />
@@ -163,7 +163,7 @@ const List = () => {
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid max-[715px]:grid-cols-1 max-[876px]:grid-cols-2 grid-cols-3 lg:grid-cols-4 gap-5">
           {(isPending && !data) && tempArray(11).map(x => (
             <Skeleton className="rounded-lg">
               <div className="w-40 h-32"></div>

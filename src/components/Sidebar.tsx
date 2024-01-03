@@ -21,7 +21,14 @@ const Sidebar = () => {
 
   return (
     <>
-      <nav className='sticky top-0 flex flex-col w-40 h-full max-h-screen p-3 text-sm lg:w-56'>
+      <nav className='lg:hidden z-10 w-full bg-black fixed bottom-0 px-4 py-3 flex items-center justify-around'>
+        {navbarList.slice(0, -2).map(x => (
+          <Link href={x.path}>
+            <x.icon className='stroke-white text-xl' />
+          </Link>
+        ))}
+      </nav>
+      <nav className={`hidden lg:flex sticky top-0 flex-col h-full max-h-screen p-3 text-sm w-72 lg:w-56`}>
         <div className='flex items-center gap-1'>
           <img className='w-8 invert' src="/logo.png" alt="Kounter APi Logo" />
           <h1 className='text-xl font-bold text-black'>Kounter</h1>
@@ -48,7 +55,7 @@ const Sidebar = () => {
         <div className='flex flex-col mt-10 gap-6'>
           {navbarList.map((x, i) => (
             <>
-              <Link href={x.path} target={x.blank ? '_blank' : ''} className={`flex items-center  gap-2 relative md:cursor-pointer`}>
+              <Link href={x.path} target={x.blank ? '_blank' : ''} className={`flex items-center whitespace-nowrap gap-2 relative md:cursor-pointer`}>
                 {pathname == x.path && <span className='-z-10 absolute top-0 bg-black p-4 my-auto inset-y-0 rounded-lg w-full h-full'></span>}
                 {pathname != x.path && <span className='absolute top-0 hover:bg-slate-300/20 p-4 py-4 my-auto inset-y-0 rounded-lg w-full h-full'></span>}
                 <x.icon className={`text-xl ml-3 stroke-black ${pathname == x.path && 'stroke-white'}`} />
