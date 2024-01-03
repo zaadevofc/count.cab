@@ -18,7 +18,6 @@ export default async function handler(
 
         let parse = await verifyJWT(token.split('ZDAuth ')[1])
         if (!parse) return res.status(401).send(parseReqSend(401))
-        console.log({ parse });
 
         let find = await prisma.user.findUnique({
             where: {
