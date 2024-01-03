@@ -46,7 +46,7 @@ export const randomID = () => Math.random().toString(36).substring(2, 30)
 export const parseImgAuth = (picture: string) => {
     const source = ["cdn.discordapp.com", "lh3.googleusercontent.com", "avatars.githubusercontent.com"];
     const find = source.find(x => picture?.includes(x));
-    const change = picture.replace(/=s96-c/, "=s500-c");
+    const change = picture?.replace(/=s96-c/, "=s500-c");
     return change || picture;
 }
 

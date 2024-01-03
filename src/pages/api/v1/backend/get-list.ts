@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { parseReqSend, verifyJWT } from '~/consts';
+import prisma from '~/prisma';
 import Nextauth from '../../auth/[...nextauth]';
 
 export default async function handler(
