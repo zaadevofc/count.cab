@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ms from 'ms';
-import { fetchAnalytics, fetchKounterAdd, fetchKounterDel, fetchKounterList, fetchKounterPut } from "./fetch";
+import { fetchAnalytics, fetchKounterAdd, fetchKounterDel, fetchKounterList, fetchKounterPut, fetchKounterReset, fetchVisits } from "./fetch";
 
 export const useKounterList = (email: string) => useQuery({
     queryFn: fetchKounterList,
@@ -21,6 +21,11 @@ export const useKounterPut = () => useMutation({
     mutationKey: ['fetchKounterPut']
 });
 
+export const useKounterReset = () => useMutation({
+    mutationFn: fetchKounterReset,
+    mutationKey: ['fetchKounterReset']
+});
+
 export const useKounterAdd = () => useMutation({
     mutationFn: fetchKounterAdd,
     mutationKey: ['fetchKounterAdd']
@@ -29,4 +34,9 @@ export const useKounterAdd = () => useMutation({
 export const useKounterDel = () => useMutation({
     mutationFn: fetchKounterDel,
     mutationKey: ['fetchKounterDel']
+});
+
+export const usePushVisits = () => useMutation({
+    mutationFn: fetchVisits,
+    mutationKey: ['fetchVisits']
 });

@@ -9,11 +9,18 @@ import { LuCheck, LuCornerDownRight, LuExternalLink, LuEye, LuGlobe, LuListFilte
 import { generateUsername } from 'unique-username-generator'
 import Layout from "~/components/Layout"
 import { randomID, tempArray } from "~/consts"
-import { useKounterAdd, useKounterDel, useKounterList, useKounterPut } from "~/hooks/use"
+import { useKounterAdd, useKounterDel, useKounterList, useKounterPut, useKounterReset, usePushVisits } from "~/hooks/use"
 
 let filterList = ['website', 'work', 'organization', 'count', 'additional']
 
 const List = () => {
+  const { mutateAsync: mutateAsyncVisits } = usePushVisits()
+
+  useEffect(() => {
+    let push = async () => await mutateAsyncVisits('list')
+    push()
+  }, [])
+
   const { isOpen: isDetailOpen, onOpen: setDetailOpen, onOpenChange: setDetailChange } = useDisclosure();
   const { isOpen: isAddOpen, onOpen: setAddOpen, onOpenChange: setAddChange } = useDisclosure();
 
@@ -22,6 +29,7 @@ const List = () => {
   const [isFilter, setFilter] = useState<any>(new Set());
   const [isSearch, setSearch] = useState<string>(' ');
   const [isEditLoading, setEditLoading] = useState(false)
+  const [isResetLoading, setResetLoading] = useState(false)
   const [isAddLoading, setAddLoading] = useState(false)
   const [isDelLoading, setDelLoading] = useState(false)
   const [isDataEdit, setDataEdit] = useState({ key: '', value: '', data: {} })
@@ -29,7 +37,7 @@ const List = () => {
   const [isVisibilitySet, setVisbilitySet] = useState<'PUBLIC' | 'PRIVATE'>('PUBLIC')
   const [isNameSet, setNameSet] = useState<string>(generateUsername(' '))
   const [isCategorySet, setCategorySet] = useState<string>('WEBSITE')
-  const [isApikeySet, setApikeySet] = useState<string>(randomID())
+  const [isApikeySet, setApikeySet] = useState<string>(randomID(10))
 
   const filter = useMemo(() => Array.from(isFilter).join(" ").split(' '), [isFilter]);
   let router = useRouter()
@@ -89,8 +97,9 @@ const List = () => {
     setEditLoading(false)
     setAddLoading(false)
     setDelLoading(false)
+    setResetLoading(false)
     setNameSet(generateUsername(' '))
-    setApikeySet(randomID())
+    setApikeySet(randomID(10))
   }, [data])
 
   const { mutateAsync: addMutateAsync, isPending: isAddPending, isSuccess: isAddSuccess } = useKounterAdd()
@@ -99,10 +108,10 @@ const List = () => {
     setAddLoading(true)
     await addMutateAsync({
       limit: data?.limit,
-      id: randomID(),
+      id: randomID(10),
       title: isNameSet.trim() || generateUsername(' '),
       category: isCategorySet || 'WEBSITE',
-      apikey: isVisibilitySet == 'PRIVATE' ? (isApikeySet.replace(/\s/g, '') || randomID()) : '',
+      apikey: isVisibilitySet == 'PRIVATE' ? (isApikeySet.replace(/\s/g, '') || randomID(10)) : '',
       visibility: isVisibilitySet,
       createdAt: Date.now().toString()
     })
@@ -118,6 +127,17 @@ const List = () => {
     setDelLoading(true)
     await delMutateAsync({ id: dataDetailId })
     if (!isDelPending) {
+      await refetch()
+      await setDetailChange()
+    }
+  }
+
+  const { mutateAsync: ResetMutateAsync, isPending: isResetPending, isSuccess: isResetSuccess } = useKounterReset()
+
+  const ResetKounter = async () => {
+    setResetLoading(true)
+    await ResetMutateAsync({ id: dataDetailId })
+    if (!isResetPending) {
       await refetch()
       await setDetailChange()
     }
@@ -140,7 +160,6 @@ const List = () => {
                 </div>
               </DropdownTrigger>
               <DropdownMenu
-                aria-label="Filter category"
                 variant="flat"
                 closeOnSelect={false}
                 selectionMode="multiple"
@@ -150,9 +169,9 @@ const List = () => {
                 {!!data ? filterList.map(x => <DropdownItem key={x} className="capitalize">{x}</DropdownItem>) : <DropdownItem isReadOnly>Loading...</DropdownItem>}
               </DropdownMenu>
             </Dropdown>
-            <div onClick={() => data?.canMake && setAddOpen()} className={`${!data?.canMake ? 'opacity-50 cursor-not-allowed' : 'md:cursor-pointer active:scale-[.97]'} flex gap-2 w-fit items-center bg-black px-2 py-1 rounded-lg`}>
-              <LuPlus className='stroke-white' />
-              <h1 className="font-medium text-white whitespace-nowrap">Tambah Kounter</h1>
+            <div onClick={() => data?.canMake && setAddOpen()} className={`${!data?.canMake && 'off'} button`}>
+              <LuPlus className='icons' />
+              <h1>Tambah Kounter</h1>
             </div>
           </div>
           <div className="mt-2 flex items-center gap-2">
@@ -177,7 +196,7 @@ const List = () => {
               </div>
               <div className="flex items-center gap-2">
                 <h1 className="bg-black text-white px-1 w-fit mt-2 lowercase font-medium rounded-lg text-xs">{x.category}</h1>
-                {x.status == 'ONLINE' && <h1 className="bg-green-500 text-white px-1 w-fit mt-2 lowercase font-medium rounded-lg text-xs">{x.status}</h1>}
+                {x.status == 'ONLINE' && <h1 className="bg-green-600 text-white px-1 w-fit mt-2 lowercase font-medium rounded-lg text-xs">{x.status}</h1>}
                 {x.status == 'OFFLINE' && <h1 className="bg-red-500 text-white px-1 w-fit mt-2 lowercase font-medium rounded-lg text-xs">{x.status}</h1>}
               </div>
               <div className='flex flex-row items-center gap-3 mt-4'>
@@ -236,7 +255,7 @@ const List = () => {
                               <h1>{x.title}</h1>
                               {x.edit && <LuPenSquare className='text-xs md:cursor-pointer' />}
                             </div>
-                            <h1 className="font-medium">{x.value}</h1>
+                            <h1 className={`font-medium ${x.value == 'Not Found' && 'text-red-500'}`}>{x.value}</h1>
                           </div>
                         }>
                         {(x.edit && !isDelLoading) && (
@@ -262,7 +281,7 @@ const List = () => {
                               <>
                                 <div className="flex items-center gap-2 w-full border border-black text-sm px-2 py-0.5 md:cursor-pointer rounded-lg">
                                   <LuCornerDownRight className='text-sm opacity-70' />
-                                  <select onChange={(e: any) => setDataEdit({ key: x.title, value: e.target.value.trim(), data: { [x.key]: e.target.value.trim() } })} defaultValue={x.value} name={x.title} id={x.title} className="w-full outline-none font-medium">
+                                  <select onChange={(e: any) => setDataEdit({ key: x.title, value: e.target.value.trim(), data: { [x.key]: e.target.value.trim() } })} defaultValue={x.value} name={x.title} id={x.title} className="w-full outline-none font-medium bg-transparent">
                                     {x?.opts?.map(y => <option value={y}>{y}</option>)}
                                   </select>
                                 </div>
@@ -283,6 +302,7 @@ const List = () => {
                       </AccordionItem>
                     ))}
                   </Accordion>
+                  <h1 onClick={() => !isResetLoading && ResetKounter()} className={`${isResetLoading ? 'opacity-50 animate-spin' : 'text-blue-500 cursor-pointer'} ml-2 font-semibold`}>Reset Kounter</h1>
                   <div className={`flex items-center justify-between px-2 bg-red-500/20 rounded-sm py-2`}>
                     <div className="flex flex-col">
                       <h1 className="text-red-500 font-semibold">Delete Kounter</h1>
@@ -353,7 +373,7 @@ const List = () => {
                       </div>
                       <div className="flex mt-2 items-center gap-2 w-full border border-black text-sm px-2 py-0.5 md:cursor-pointer rounded-lg">
                         <LuCornerDownRight className='text-sm opacity-70' />
-                        <select disabled={isAddLoading} onChange={(e) => setCategorySet(e.target.value)} name={'Kounter category'} id={'Kounter category'} className="w-full outline-none font-medium">
+                        <select disabled={isAddLoading} onChange={(e) => setCategorySet(e.target.value)} name={'Kounter category'} id={'Kounter category'} className="w-full outline-none font-medium bg-transparent">
                           {filterList.map(x => x.toUpperCase()).map(y => <option value={y}>{y}</option>)}
                         </select>
                       </div>

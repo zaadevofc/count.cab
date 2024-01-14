@@ -3,7 +3,8 @@ import { BuiltInProviderType } from "next-auth/providers/index";
 import { LiteralUnion, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePushVisits } from "~/hooks/use";
 // import { visit } from "~/hooks/api";
 
 const Index = () => {
@@ -11,15 +12,12 @@ const Index = () => {
 
   const router = useRouter()
   const { status } = useSession()
+  const { mutateAsync } = usePushVisits()
 
-  // const visitMutate = useMutation({
-  //   mutationFn: visit
-  // })
-
-  // useEffect(() => {
-  //   let hit = () => visitMutate.mutateAsync(VISIT_MAIN_API)
-  //   hit()
-  // }, [])
+  useEffect(() => {
+    let push = async () => await mutateAsync('main')
+    push()
+  }, [])
 
   const LogIn = (prov: LiteralUnion<BuiltInProviderType>) => {
     let set = isLog.length == 0;

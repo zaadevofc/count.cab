@@ -41,7 +41,15 @@ export const fetchAPi = async (url: string, type: 'text' | 'json') => {
 }
 
 export const tempArray = (length: number) => [...new Array(length)]
-export const randomID = () => Math.random().toString(36).substring(2, 30)
+export const randomID = (length: number) => {
+    const char = 'ABCDIJKLTUVW01234EFGH56789XYZabcdefghijkMNOPQRSlmnopqrstuvwxyz';
+    let key = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * char.length);
+      key += char.charAt(randomIndex);
+    }
+    return key;
+  }
 
 export const parseImgAuth = (picture: string) => {
     const source = ["cdn.discordapp.com", "lh3.googleusercontent.com", "avatars.githubusercontent.com"];

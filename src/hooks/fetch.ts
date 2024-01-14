@@ -1,6 +1,6 @@
 import { groupBy, signJWT } from "~/consts";
 
-type FetchConfig = { uri: string | URL; method: 'GET' | 'POST'; body?: any; authToken?: string }
+type FetchConfig = { uri: string | URL | any; method: 'GET' | 'POST'; body?: any; authToken?: string }
 
 export const fetchJson = async (config: FetchConfig) => {
     let req = await fetch(config.uri, {
@@ -44,6 +44,13 @@ export const fetchKounterPut = async (query: any) => {
     return true;
 }
 
+export const fetchKounterReset = async (query: any) => {
+    let token = await signJWT(query)
+    let req = await fetchJson({ uri: '/api/v1/backend/reset', method: 'POST', authToken: token })
+    if (req.status != 200) return { ok: false };
+    return true;
+}
+
 export const fetchKounterAdd = async (query: any) => {
     let token = await signJWT(query)
     let req = await fetchJson({ uri: '/api/v1/backend/add', method: 'POST', authToken: token })
@@ -55,5 +62,22 @@ export const fetchKounterDel = async (query: any) => {
     let token = await signJWT(query)
     let req = await fetchJson({ uri: '/api/v1/backend/del', method: 'POST', authToken: token })
     if (req.status != 200) return { ok: false };
+    return true;
+}
+
+export const fetchVisits = async (type: any) => {
+    if (type == 'main') {
+        await fetchJson({ uri: process.env.NEXT_PUBLIC_VAPI_MAIN, method: 'GET' })
+    } else if (type == 'dash') {
+        await fetchJson({ uri: process.env.NEXT_PUBLIC_VAPI_DASH, method: 'GET' })
+    } else if (type == 'list') {
+        await fetchJson({ uri: process.env.NEXT_PUBLIC_VAPI_LIST, method: 'GET' })
+    } else if (type == 'profile') {
+        await fetchJson({ uri: process.env.NEXT_PUBLIC_VAPI_PROFILE, method: 'GET' })
+    } else if (type == 'premium') {
+        await fetchJson({ uri: process.env.NEXT_PUBLIC_VAPI_PREMIUM, method: 'GET' })
+    } else if (type == 'docs') {
+        await fetchJson({ uri: process.env.NEXT_PUBLIC_VAPI_DOCS, method: 'GET' })
+    }
     return true;
 }

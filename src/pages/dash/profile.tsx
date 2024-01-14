@@ -1,16 +1,25 @@
 import { signOut, useSession } from "next-auth/react"
 import Image from "next/image"
+import { useEffect } from "react"
 import Layout from "~/components/Layout"
 import { parseImgAuth } from "~/consts"
+import { usePushVisits } from "~/hooks/use"
 
 const Profile = () => {
   const { data: session, status }: any = useSession()
+
+  const { mutateAsync } = usePushVisits()
+
+  useEffect(() => {
+    let push = async () => await mutateAsync('profile')
+    push()
+  }, [])
 
   return (
     <>
       <Layout>
         <div className="flex items-start md:items-center gap-7">
-          <Image className="w-20 md:w-28 drop-shadow-md border-2 border-black rounded-full" unoptimized src={parseImgAuth(session?.token?.picture)} alt="a" quality={100} width={500} height={500} />
+          <Image className="w-20 md:w-28 drop-shadow-md border-2 border-black rounded-full" src={parseImgAuth(session?.token?.picture)} alt="a" quality={100} width={500} height={500} />
           <div className="flex flex-col gap-4 sm:gap-0 sm:flex-row justify-between w-full">
             <div className="flex flex-col">
               <div className="flex flex-col">

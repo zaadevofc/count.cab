@@ -30,7 +30,7 @@ const Sidebar = () => {
       </nav>
       <nav className={`hidden lg:flex sticky top-0 flex-col h-full max-h-screen p-3 text-sm w-72 lg:w-56`}>
         <div className='flex items-center gap-1'>
-          <img className='w-8 invert' src="/logo.png" alt="Kounter APi Logo" />
+          <Image className='w-8 invert' src="/logo.png" alt="Kounter APi Logo" width={200} height={200} />
           <h1 className='text-xl font-bold text-black'>Kounter</h1>
         </div>
         <div className='flex items-center md:cursor-pointer justify-between mt-3 bg-white border border-slate-300 rounded-lg px-2 py-1 drop-shadow-sm'>
