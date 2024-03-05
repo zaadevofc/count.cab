@@ -24,20 +24,20 @@ const Dashboard = () => {
     { icon: LuListTree, count: data?.list, title: 'Kounter List', per: data?.limit },
     { icon: LuActivity, count: data?.online, title: 'Kounter Online' },
     { icon: LuEye, count: data?.count, title: 'Total Kounter' },
-    { icon: LuMousePointerClick, count: data?.click, title: 'Total Klik' },
+    { icon: LuMousePointerClick, count: data?.click, title: 'Total Click' },
   ]
 
   return (
     <>
       <Layout>
-        <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-full justify-between gap-3 md:gap-5'>
+        <div className='grid grid-cols-1 bg-gray-200/50 rounded-lg p-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-full justify-between gap-3 md:gap-3'>
           {!data && tempArray(4).map(x => (
             <Skeleton className='rounded-lg'>
               <div className='w-full h-20'></div>
             </Skeleton>
           ))}
           {data && dashCards.map(x => (
-            <div className='card'>
+            <div className='card bg-white'>
               <div>
                 <h1 className='count'>
                   {x.count}

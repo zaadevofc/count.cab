@@ -176,13 +176,14 @@ const List = () => {
           </div>
           <div className="mt-2 flex items-center gap-2">
             {filter.map((x: any) => (
-              <h1 onClick={() => setFilter(new Set(filter.filter(y => y != x)))} className="bg-black text-white px-2 w-fit mt-2 lowercase font-medium rounded-lg text-xs">
-                {x}
+              <h1 onClick={() => setFilter(new Set(filter.filter(y => y != x)))} className="flex group gap-1.5 cursor-pointer items-center bg-black text-white px-2 w-fit mt-2 lowercase font-medium rounded-lg text-xs">
+                <span className="group-hover:block hidden transition-all text-red-500">x</span>
+                <span className="text-white">{x}</span>
               </h1>
             ))}
           </div>
         </div>
-        <div className="grid max-[715px]:grid-cols-1 max-[876px]:grid-cols-2 grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid max-[715px]:grid-cols-1 max-[876px]:grid-cols-2 grid-cols-3 lg:grid-cols-4 gap-3">
           {(isPending && !data) && tempArray(11).map(x => (
             <Skeleton className="rounded-lg">
               <div className="w-40 h-32"></div>
@@ -302,7 +303,7 @@ const List = () => {
                       </AccordionItem>
                     ))}
                   </Accordion>
-                  <h1 onClick={() => !isResetLoading && ResetKounter()} className={`${isResetLoading ? 'opacity-50 animate-spin' : 'text-blue-500 cursor-pointer'} ml-2 font-semibold`}>Reset Kounter</h1>
+                  <h1 onClick={() => (!isResetLoading && dataDetail.count != 0) && ResetKounter()} className={`${isResetLoading ? 'opacity-50 animate-spin' : 'text-blue-500 cursor-pointer'} ml-2 font-semibold`}>Reset Kounter</h1>
                   <div className={`flex items-center justify-between px-2 bg-red-500/20 rounded-sm py-2`}>
                     <div className="flex flex-col">
                       <h1 className="text-red-500 font-semibold">Delete Kounter</h1>

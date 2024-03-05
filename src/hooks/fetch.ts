@@ -20,6 +20,7 @@ export const fetchKounterList = async ({ queryKey }: any) => {
     return {
         ok: true,
         limit: json.data.limit,
+        available: json.data.available,
         canMake: json.data.canMake,
         all: json.data.list.sort((a: any, b: any) => Number(a.createdAt) - Number(b.createdAt)).reverse(),
         list: groupBy(json.data.list, 'category')

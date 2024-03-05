@@ -28,7 +28,8 @@ export default async function handler(
         })
 
         let data = {
-            limit: Number(find?.limit) - Number(find?.kounter.length),
+            limit: Number(find?.limit),
+            available: Number(find?.limit) - Number(find?.kounter.length),
             canMake: Number(find?.kounter.length) < Number(find?.limit),
             list: find?.kounter
         }

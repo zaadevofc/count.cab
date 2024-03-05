@@ -31,7 +31,7 @@ h1 {
 }
 
 .card {
-  @apply [box-shadow:_0_0_2px_rgb(25,_68,_103)] flex justify-between items-center h-fit gap-6 p-3 w-full rounded-lg border border-black;
+  @apply flex justify-between items-center h-fit gap-6 p-3 w-full rounded-lg border border-black;
 }
 
 .card > div > .count {
@@ -51,6 +51,10 @@ h1 {
 ::-webkit-scrollbar-thumb {
   border-radius: 0px !important;
   /* background-color: rgb(16 185 129); */
+}
+
+.sdsd {
+  filter: drop-shadow(0 0 23px #37FF8B)
 }
 
 img,

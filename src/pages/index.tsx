@@ -4,6 +4,7 @@ import { LiteralUnion, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { LuLaugh } from "react-icons/lu";
 import { usePushVisits } from "~/hooks/use";
 // import { visit } from "~/hooks/api";
 
@@ -37,25 +38,31 @@ const Index = () => {
   if (status == 'unauthenticated') return (
     <>
       <div className="flex flex-col min-h-screen items-center justify-center">
-        <div className="flex flex-col gap-5 bg-white rounded-lg p-8 max-w-sm border border-black">
-          <div className='flex items-center gap-1'>
-            <img className='w-8 invert' src="/logo.png" alt="Kounter APi Logo" />
-            <h1 className='text-xl font-bold text-black'>Kounter</h1>
-          </div>
-          <h1 className="font-medium">Login untuk melanjutkan :</h1>
-          <div className="flex flex-col gap-3">
-            <Button isDisabled={isLog[0]} onPress={() => LogIn('google')} className="flex gap-3 justify-between w-full bg-black" radius="sm">
-              <img className="w-5" src="/logo/google.svg" alt="" />
-              <h1 className="text-white font-medium">Login menggunakan Google</h1>
-            </Button>
-            <Button isDisabled={isLog[1]} onPress={() => LogIn('github')} className="flex gap-3 justify-between w-full bg-black" radius="sm">
-              <img className="w-5 bg-white rounded-full" src="/logo/github.svg" alt="" />
-              <h1 className="text-white font-medium">Login menggunakan Github</h1>
-            </Button>
-            <Button isDisabled={isLog[2]} onPress={() => LogIn('discord')} className="flex gap-3 justify-between w-full bg-black" radius="sm">
-              <img className="w-5" src="/logo/discord.svg" alt="" />
-              <h1 className="text-white font-medium">Login menggunakan Discord</h1>
-            </Button>
+        <div className="bg-gray-200/50 p-10 rounded-xl">
+          <div className="relative flex flex-col gap-5 bg-white rounded-lg p-8 max-w-sm border border-black">
+            <div className="absolute -top-3 -right-3">
+              <LuLaugh className='text-5xl fill-blue-700 stroke-gray-200 rotate-45' />
+            </div>
+            <div className='flex items-center gap-1'>
+              <img className='w-8 invert' src="/logo.png" alt="Kounter APi Logo" />
+              <h1 className='text-xl font-bold text-black'>Kounter</h1>
+            </div>
+            <h1 className="font-medium">Login untuk melanjutkan :</h1>
+            <div className="flex flex-col gap-3">
+              <Button isDisabled={isLog[0]} onPress={() => LogIn('google')} className="flex justify-evenly w-full bg-black" radius="sm">
+                <img className="w-5" src="/logo/google.svg" alt="" />
+                <h1 className="text-white font-medium">Login menggunakan Google</h1>
+              </Button>
+              <Button isDisabled={isLog[1]} onPress={() => LogIn('github')} className="flex justify-evenly w-full bg-black" radius="sm">
+                <img className="w-5 bg-white rounded-full" src="/logo/github.svg" alt="" />
+                <h1 className="text-white font-medium">Login menggunakan Github</h1>
+              </Button>
+              <Button isDisabled={isLog[2]} onPress={() => LogIn('discord')} className="flex justify-evenly w-full bg-black" radius="sm">
+                <img className="w-5" src="/logo/discord.svg" alt="" />
+                <h1 className="text-white font-medium">Login menggunakan Discord</h1>
+              </Button>
+            </div>
+            <p className="text-xs pr-1">*Dengan ini anda menyetujui ketentuan dan persyaratan yang berlaku.</p>
           </div>
         </div>
         <div className="flex flex-col text-center gap-2 items-center">

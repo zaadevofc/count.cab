@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Deepstream Chat</title>
+    <script src="https://cdn.deepstream.io/js/client/latest/ds.min.js"></script>
+  </head>
+  <body>
+    <input type="text" />
+    <script type="text/javascript">
+      window.onload = function () {
+        const { DeepstreamClient } = window.DeepstreamClient;
+        const client = new DeepstreamClient("localhost:5500");
+        client.login();
+
+        const record = client.record.getRecord("some-name");
+
+        const input = document.querySelector("input");
+
+        input.onkeyup = function () {
+          record.set("firstname", input.value);
+        };
+
+        record.subscribe("firstname", function (value) {
+          input.value = value;
+        });
+      };
+    </script>
+  </body>
+</html>
